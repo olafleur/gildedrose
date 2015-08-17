@@ -44,4 +44,24 @@ public class GildedRoseTest {
         assertEquals(4, resultingList.get(0).getSellIn());
         assertEquals(6, resultingList.get(0).getQuality());
     }
+
+    @Test
+    public void sulfuras() {
+        list.add(new Item("Sulfuras, Hand of Ragnaros", 0, 80));
+
+        List<Item> resultingList = GildedRose.updateQuality(list);
+
+        assertEquals(0, resultingList.get(0).getSellIn());
+        assertEquals(80, resultingList.get(0).getQuality());
+    }
+
+    @Test
+    public void backstage() {
+        list.add(new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
+
+        List<Item> resultingList = GildedRose.updateQuality(list);
+
+        assertEquals(14, resultingList.get(0).getSellIn());
+        assertEquals(21, resultingList.get(0).getQuality());
+    }
 }
