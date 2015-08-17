@@ -64,4 +64,14 @@ public class GildedRoseTest {
         assertEquals(14, resultingList.get(0).getSellIn());
         assertEquals(21, resultingList.get(0).getQuality());
     }
+
+    @Test
+    public void conjured() {
+        list.add(new Item("Conjured Mana Cake", 3, 6));
+
+        List<Item> resultingList = GildedRose.updateQuality(list);
+
+        assertEquals(2, resultingList.get(0).getSellIn());
+        assertEquals(4, resultingList.get(0).getQuality());
+    }
 }

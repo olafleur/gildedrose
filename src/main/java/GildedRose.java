@@ -3,6 +3,8 @@ import java.util.List;
 
 
 public class GildedRose {
+    private static final int MAX_QUALITY = 50;
+
     public static void main(String[] args) {
 
         System.out.println("OMGHAI!");
@@ -22,52 +24,68 @@ public class GildedRose {
 
     public static List<Item> updateQuality(List<Item> items) {
         for (Item item : items) {
-            if (!agedBrie(item) && !backstagePass(item)) {
-                if (item.getQuality() > 0) {
-                    if (!sulfuras(item)) {
-                        item.setQuality(item.getQuality() - 1);
-                    }
-                }
+            if (itemQuiPerdQualite(item)) {
+                diminueQualite(item);
             } else {
-                if (item.getQuality() < 50) {
-                    item.setQuality(item.getQuality() + 1);
+                augmenterQualite(item);
 
-                    if (backstagePass(item)) {
-                        if (item.getSellIn() < 11 && item.getQuality() < 50) {
-                            item.setQuality(item.getQuality() + 1);
-                        }
-
-                        if (item.getSellIn() < 6 && item.getQuality() < 50) {
-                            item.setQuality(item.getQuality() + 1);
-                        }
-                    }
+                if (backstagePass(item)) {
+                    updateBackstagePassQualite(item);
                 }
             }
 
-            if (!sulfuras(item)) {
+            if (itemDoitEtreVenduEventuellement(item)) {
                 item.setSellIn(item.getSellIn() - 1);
             }
 
-            if (item.getSellIn() < 0) {
+            if (itemDepasseDate(item)) {
                 if (!agedBrie(item)) {
                     if (!backstagePass(item)) {
-                        if (item.getQuality() > 0) {
-                            if (!sulfuras(item)) {
-                                item.setQuality(item.getQuality() - 1);
-                            }
+                        if (item.getQuality() > 0 && itemDoitEtreVenduEventuellement(item)) {
+                            diminueQualite(item);
                         }
                     } else {
                         item.setQuality(0);
                     }
                 } else {
-                    if (item.getQuality() < 50) {
-                        item.setQuality(item.getQuality() + 1);
-                    }
+                    augmenterQualite(item);
                 }
             }
         }
 
         return items;
+    }
+
+    private static boolean itemDepasseDate(Item item) {
+        return item.getSellIn() < 0;
+    }
+
+    private static void diminueQualite(Item item) {
+        item.setQuality(item.getQuality() - 1);
+    }
+
+    private static boolean itemDoitEtreVenduEventuellement(Item item) {
+        return !sulfuras(item);
+    }
+
+    private static void augmenterQualite(Item item) {
+        if (item.getQuality() < MAX_QUALITY) {
+            item.setQuality(item.getQuality() + 1);
+        }
+    }
+
+    private static boolean itemQuiPerdQualite(Item item) {
+        return !agedBrie(item) && !backstagePass(item) && item.getQuality() > 0 && !sulfuras(item);
+    }
+
+    private static void updateBackstagePassQualite(Item item) {
+        if (item.getSellIn() < 11) {
+            item.setQuality(item.getQuality() + 1);
+        }
+
+        if (item.getSellIn() < 6) {
+            item.setQuality(item.getQuality() + 1);
+        }
     }
 
     private static boolean backstagePass(Item item) {
