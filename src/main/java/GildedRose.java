@@ -21,7 +21,7 @@ public class GildedRose {
 
 
 	
-    public static void updateQuality(List<Item> items)
+    public static List<Item> updateQuality(List<Item> items)
     {
         for (Item item : items) {
             if ((!"Aged Brie".equals(item.getName())) && !"Backstage passes to a TAFKAL80ETC concert".equals(item.getName())) {
@@ -72,6 +72,8 @@ public class GildedRose {
                 }
             }
         }
+
+        return items;
     }
 
 }
